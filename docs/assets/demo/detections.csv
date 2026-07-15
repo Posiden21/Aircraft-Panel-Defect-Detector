@@ -1,0 +1,4 @@
+frame_id,defect_id,x,y,w,h,area,score,annotated_image
+panel_000,1,127,258,161,55,1778.5,0.201,docs/assets/demo/annotated/panel_000_annotated.png
+panel_001,1,131,182,67,33,1116.5,0.505,docs/assets/demo/annotated/panel_001_annotated.png
+panel_002,1,268,199,69,21,526.0,0.363,docs/assets/demo/annotated/panel_002_annotated.png

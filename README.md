@@ -1,22 +1,49 @@
 # Aircraft Panel Defect Detector
 
-ROS 2 computer vision package that detects aircraft-style panel surface defects with OpenCV, publishes annotated images, emits JSON detection metadata, and logs detections to CSV for later dataset work.
+ROS 2 + OpenCV computer-vision package for detecting aircraft-style panel defects such as scratches, dents, and pitting. The project includes a runnable ROS pipeline, a local non-ROS demo, synthetic image generation, structured detection metadata, CSV logging, and unit tests.
 
-This is designed as an entry-level robotics and machine learning portfolio project: it shows ROS 2 nodes, topics, launch files, parameters, OpenCV perception, synthetic data generation, and a basic dataset logging workflow.
+This is built as a portfolio-ready robotics/perception project: the core detector is testable without ROS, while the ROS 2 nodes make it usable in a camera-stream workflow.
 
-## Features
+## What It Does
 
-- Detects scratches, dark spots, and surface anomalies with thresholding, edges, morphology, and contour filtering.
-- Publishes annotated images on `/defect_detector/annotated_image`.
-- Publishes structured JSON metadata on `/defect_detector/detections`.
-- Logs bounding boxes, areas, scores, and timestamps to CSV.
-- Includes a folder-based image publisher for synthetic camera playback.
-- Includes synthetic aircraft panel image generation for demos without a physical camera.
+- Detects dark scratches, spots, and panel-surface anomalies with OpenCV.
+- Draws bounding boxes on annotated output frames.
+- Publishes JSON detection metadata with bounding boxes, area, and score.
+- Logs detections to CSV for dataset-building and review.
+- Provides synthetic aircraft panel images for demos without a physical camera.
+- Runs as either a ROS 2 package or a local OpenCV script.
+
+## Demo Output
+
+The local demo generates aircraft panel images, runs the detector, and writes annotated outputs.
+
+| Raw Panel | Annotated Detection |
+| --- | --- |
+| ![raw panel](docs/assets/demo/raw/panel_000.png) | ![annotated panel](docs/assets/demo/annotated/panel_000_annotated.png) |
+
+Example metadata:
+
+```json
+{
+  "frame_id": "panel_000",
+  "defect_count": 1,
+  "detections": [
+    {
+      "x": 127,
+      "y": 258,
+      "w": 161,
+      "h": 55,
+      "area": 1778.5,
+      "score": 0.201
+    }
+  ]
+}
+```
 
 ## Architecture
 
 ```text
-Image folder / camera
+Image folder or camera topic
         |
         v
 /camera/image_raw
@@ -29,60 +56,86 @@ DefectDetectorNode
         +--> defect_detections.csv
 ```
 
-## Repository Layout
+Core OpenCV logic lives in `aircraft_panel_detector/vision.py`; ROS nodes are thin wrappers around that logic.
+
+## Repository Structure
 
 ```text
-aircraft_panel_detector/
-  aircraft_panel_detector/
-    defect_detector_node.py
-    image_folder_publisher.py
-    vision.py
-  launch/
-    detector.launch.py
-    synthetic_demo.launch.py
-  scripts/
-    generate_synthetic_panels.py
-  test/
-    test_vision.py
-  package.xml
-  setup.py
+.
+├── aircraft_panel_detector/
+│   ├── defect_detector_node.py
+│   ├── image_folder_publisher.py
+│   └── vision.py
+├── docs/
+│   ├── assets/demo/
+│   ├── portfolio_walkthrough.md
+│   └── technical_overview.md
+├── launch/
+│   ├── detector.launch.py
+│   └── synthetic_demo.launch.py
+├── scripts/
+│   ├── generate_synthetic_panels.py
+│   └── run_local_demo.py
+├── test/
+│   └── test_vision.py
+├── package.xml
+├── setup.py
+└── requirements.txt
 ```
 
-This repository is a Python `ament_python` package. The core OpenCV logic lives in `aircraft_panel_detector/vision.py` so it can be unit tested without launching ROS.
+## Local Demo Without ROS
 
-## Requirements
+Use this path if you only want to verify the computer-vision portion.
 
-- ROS 2 Humble or newer
-- Python 3.10+
-- OpenCV
-- NumPy
-- `cv_bridge`
-- `sensor_msgs`
-- `std_msgs`
+```bash
+python3 -m pip install -r requirements.txt
+python3 scripts/run_local_demo.py --output-dir docs/assets/demo --count 3 --seed 7
+```
 
-On Ubuntu with ROS 2 Humble:
+Generated files:
+
+- `docs/assets/demo/raw/`
+- `docs/assets/demo/annotated/`
+- `docs/assets/demo/detections.csv`
+- `docs/assets/demo/detections.json`
+
+Run tests:
+
+```bash
+python3 -m pytest test
+```
+
+## ROS 2 Setup
+
+Recommended environment: Ubuntu 24.04 with ROS 2 Jazzy.
 
 ```bash
 sudo apt update
-sudo apt install ros-humble-cv-bridge ros-humble-image-transport python3-opencv python3-numpy python3-pytest
+sudo apt install ros-jazzy-desktop python3-colcon-common-extensions \
+  ros-jazzy-cv-bridge ros-jazzy-image-transport \
+  python3-opencv python3-numpy python3-pytest
 ```
 
-Replace `humble` with your ROS 2 distribution if needed.
+For Ubuntu 22.04, use ROS 2 Humble and replace `jazzy` with `humble`.
 
-## Build
+Source ROS:
 
-Clone this repository inside a ROS 2 workspace:
+```bash
+source /opt/ros/jazzy/setup.bash
+```
+
+## Build In A ROS 2 Workspace
 
 ```bash
 mkdir -p ~/ros2_ws/src
 cd ~/ros2_ws/src
-git clone <your-repo-url> aircraft_panel_detector
+git clone https://github.com/Posiden21/Aircraft-Panel-Defect-Detector.git aircraft_panel_detector
 cd ~/ros2_ws
 colcon build --packages-select aircraft_panel_detector
 source install/setup.bash
 ```
 
-## Run a Synthetic Demo
+## Run The Synthetic ROS Demo
 
 Generate sample images:
 
@@ -91,7 +144,7 @@ cd ~/ros2_ws/src/aircraft_panel_detector
 python3 scripts/generate_synthetic_panels.py --count 12 --seed 7
 ```
 
-Launch both the folder image publisher and detector:
+Launch the folder image publisher and detector:
 
 ```bash
 cd ~/ros2_ws
@@ -101,7 +154,7 @@ ros2 launch aircraft_panel_detector synthetic_demo.launch.py \
   log_path:=defect_detections.csv
 ```
 
-View output topics:
+View outputs:
 
 ```bash
 ros2 topic echo /defect_detector/detections
@@ -110,7 +163,7 @@ ros2 run rqt_image_view rqt_image_view
 
 Select `/defect_detector/annotated_image` in `rqt_image_view`.
 
-## Run With a Real Camera Topic
+## Run With A Real Camera Topic
 
 If another node publishes `sensor_msgs/Image` on `/camera/image_raw`:
 
@@ -124,6 +177,7 @@ Override parameters:
 ros2 launch aircraft_panel_detector detector.launch.py \
   input_topic:=/my_camera/image_raw \
   min_area:=100 \
+  dark_threshold:=85 \
   log_path:=logs/defect_detections.csv
 ```
 
@@ -131,52 +185,38 @@ ros2 launch aircraft_panel_detector detector.launch.py \
 
 | Topic | Type | Description |
 | --- | --- | --- |
-| `/camera/image_raw` | `sensor_msgs/Image` | Input image stream |
-| `/defect_detector/annotated_image` | `sensor_msgs/Image` | Annotated output image |
+| `/camera/image_raw` | `sensor_msgs/Image` | Input camera stream |
+| `/defect_detector/annotated_image` | `sensor_msgs/Image` | Image with bounding boxes |
 | `/defect_detector/detections` | `std_msgs/String` | JSON detection metadata |
 
-## Detection Metadata
+## Detection Approach
 
-Example message:
+The baseline detector uses:
 
-```json
-{
-  "timestamp": "2026-06-23T14:00:00+00:00",
-  "defect_count": 1,
-  "detections": [
-    {
-      "x": 143,
-      "y": 87,
-      "w": 42,
-      "h": 19,
-      "area": 612.5,
-      "score": 0.613
-    }
-  ]
-}
-```
+1. Grayscale conversion
+2. Gaussian blur
+3. Dark-region thresholding
+4. Canny edge detection
+5. Morphology cleanup
+6. Contour filtering
+7. Bounding-box annotation
 
-## Test
+This is a transparent inspection baseline, not a certified aviation model. A natural next step would be replacing or augmenting the OpenCV stage with YOLO, Detectron2, or ONNX inference.
 
-The OpenCV core can be tested without ROS 2:
+## Portfolio Notes
 
-```bash
-python3 -m pip install -r requirements.txt
-python3 -m pytest test
-```
+This project demonstrates:
 
-Inside a ROS 2 workspace, run package tests with:
+- ROS 2 package structure
+- Computer-vision preprocessing
+- Detection metadata design
+- Dataset logging
+- Synthetic data generation
+- Unit testing of perception logic
+- GitHub Actions CI
 
-```bash
-colcon test --packages-select aircraft_panel_detector
-colcon test-result --verbose
-```
+See [docs/technical_overview.md](docs/technical_overview.md) and [docs/portfolio_walkthrough.md](docs/portfolio_walkthrough.md) for more detail.
 
+## License
 
-## Future Improvements
-
-- Add YOLOv8, Detectron2, or ONNX model inference as an alternate detector.
-- Record and replay ROS bags for repeatable benchmark runs.
-- Add FPS, latency, CPU, and memory metrics.
-- Publish `vision_msgs/Detection2DArray` instead of JSON strings.
-- Add Docker or dev container support.
+MIT License.

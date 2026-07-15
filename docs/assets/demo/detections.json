@@ -1,0 +1,53 @@
+[
+  {
+    "timestamp": "2026-07-15T00:38:09.073000+00:00",
+    "frame_id": "panel_000",
+    "defect_count": 1,
+    "detections": [
+      {
+        "x": 127,
+        "y": 258,
+        "w": 161,
+        "h": 55,
+        "area": 1778.5,
+        "score": 0.201
+      }
+    ],
+    "raw_image": "docs/assets/demo/raw/panel_000.png",
+    "annotated_image": "docs/assets/demo/annotated/panel_000_annotated.png"
+  },
+  {
+    "timestamp": "2026-07-15T00:38:09.097199+00:00",
+    "frame_id": "panel_001",
+    "defect_count": 1,
+    "detections": [
+      {
+        "x": 131,
+        "y": 182,
+        "w": 67,
+        "h": 33,
+        "area": 1116.5,
+        "score": 0.505
+      }
+    ],
+    "raw_image": "docs/assets/demo/raw/panel_001.png",
+    "annotated_image": "docs/assets/demo/annotated/panel_001_annotated.png"
+  },
+  {
+    "timestamp": "2026-07-15T00:38:09.121343+00:00",
+    "frame_id": "panel_002",
+    "defect_count": 1,
+    "detections": [
+      {
+        "x": 268,
+        "y": 199,
+        "w": 69,
+        "h": 21,
+        "area": 526.0,
+        "score": 0.363
+      }
+    ],
+    "raw_image": "docs/assets/demo/raw/panel_002.png",
+    "annotated_image": "docs/assets/demo/annotated/panel_002_annotated.png"
+  }
+]
