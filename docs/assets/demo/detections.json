@@ -1,50 +1,98 @@
 [
   {
-    "timestamp": "2026-07-15T00:38:09.073000+00:00",
+    "timestamp": "2026-07-15T00:43:42.321617+00:00",
     "frame_id": "panel_000",
-    "defect_count": 1,
+    "defect_count": 2,
     "detections": [
       {
-        "x": 127,
-        "y": 258,
-        "w": 161,
-        "h": 55,
-        "area": 1778.5,
-        "score": 0.201
+        "x": 482,
+        "y": 290,
+        "w": 28,
+        "h": 30,
+        "area": 470.5,
+        "score": 0.56
+      },
+      {
+        "x": 464,
+        "y": 275,
+        "w": 18,
+        "h": 17,
+        "area": 219.5,
+        "score": 0.717
       }
     ],
     "raw_image": "docs/assets/demo/raw/panel_000.png",
     "annotated_image": "docs/assets/demo/annotated/panel_000_annotated.png"
   },
   {
-    "timestamp": "2026-07-15T00:38:09.097199+00:00",
+    "timestamp": "2026-07-15T00:43:42.342273+00:00",
     "frame_id": "panel_001",
-    "defect_count": 1,
+    "defect_count": 5,
     "detections": [
       {
-        "x": 131,
-        "y": 182,
-        "w": 67,
+        "x": 415,
+        "y": 326,
+        "w": 71,
         "h": 33,
-        "area": 1116.5,
-        "score": 0.505
+        "area": 1503.5,
+        "score": 0.642
+      },
+      {
+        "x": 119,
+        "y": 96,
+        "w": 177,
+        "h": 38,
+        "area": 1108.5,
+        "score": 0.165
+      },
+      {
+        "x": 495,
+        "y": 117,
+        "w": 25,
+        "h": 38,
+        "area": 488.0,
+        "score": 0.514
+      },
+      {
+        "x": 465,
+        "y": 120,
+        "w": 23,
+        "h": 17,
+        "area": 280.5,
+        "score": 0.717
+      },
+      {
+        "x": 473,
+        "y": 145,
+        "w": 11,
+        "h": 11,
+        "area": 92.5,
+        "score": 0.764
       }
     ],
     "raw_image": "docs/assets/demo/raw/panel_001.png",
     "annotated_image": "docs/assets/demo/annotated/panel_001_annotated.png"
   },
   {
-    "timestamp": "2026-07-15T00:38:09.121343+00:00",
+    "timestamp": "2026-07-15T00:43:42.362367+00:00",
     "frame_id": "panel_002",
-    "defect_count": 1,
+    "defect_count": 2,
     "detections": [
       {
-        "x": 268,
-        "y": 199,
-        "w": 69,
-        "h": 21,
-        "area": 526.0,
-        "score": 0.363
+        "x": 295,
+        "y": 123,
+        "w": 199,
+        "h": 55,
+        "area": 2122.0,
+        "score": 0.194
+      },
+      {
+        "x": 410,
+        "y": 169,
+        "w": 15,
+        "h": 22,
+        "area": 260.0,
+        "score": 0.788
       }
     ],
     "raw_image": "docs/assets/demo/raw/panel_002.png",

@@ -17,24 +17,24 @@ This is built as a portfolio-ready robotics/perception project: the core detecto
 
 The local demo generates aircraft panel images, runs the detector, and writes annotated outputs.
 
-| Raw Panel | Annotated Detection |
-| --- | --- |
-| ![raw panel](docs/assets/demo/raw/panel_000.png) | ![annotated panel](docs/assets/demo/annotated/panel_000_annotated.png) |
+![aircraft panel inspection demo](docs/assets/demo/inspection_demo.png)
+
+The generated demo shows raw inspection frames on the left and annotated detector outputs on the right.
 
 Example metadata:
 
 ```json
 {
   "frame_id": "panel_000",
-  "defect_count": 1,
+  "defect_count": 2,
   "detections": [
     {
-      "x": 127,
-      "y": 258,
-      "w": 161,
-      "h": 55,
-      "area": 1778.5,
-      "score": 0.201
+      "x": 482,
+      "y": 290,
+      "w": 28,
+      "h": 30,
+      "area": 470.5,
+      "score": 0.56
     }
   ]
 }
@@ -89,13 +89,14 @@ Use this path if you only want to verify the computer-vision portion.
 
 ```bash
 python3 -m pip install -r requirements.txt
-python3 scripts/run_local_demo.py --output-dir docs/assets/demo --count 3 --seed 7
+python3 scripts/run_local_demo.py --output-dir docs/assets/demo --count 3 --seed 21
 ```
 
 Generated files:
 
 - `docs/assets/demo/raw/`
 - `docs/assets/demo/annotated/`
+- `docs/assets/demo/inspection_demo.png`
 - `docs/assets/demo/detections.csv`
 - `docs/assets/demo/detections.json`
 
