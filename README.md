@@ -48,6 +48,8 @@ aircraft_panel_detector/
   setup.py
 ```
 
+This repository is a Python `ament_python` package. The core OpenCV logic lives in `aircraft_panel_detector/vision.py` so it can be unit tested without launching ROS.
+
 ## Requirements
 
 - ROS 2 Humble or newer
@@ -159,6 +161,7 @@ Example message:
 The OpenCV core can be tested without ROS 2:
 
 ```bash
+python3 -m pip install -r requirements.txt
 python3 -m pytest test
 ```
 

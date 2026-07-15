@@ -1,0 +1,16 @@
+build/
+install/
+log/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.DS_Store
+.venv/
+venv/
+*.egg-info/
+defect_detections.csv
+defect_log.csv
+json_records/
+datasets/sample_images/
+datasets/generated/

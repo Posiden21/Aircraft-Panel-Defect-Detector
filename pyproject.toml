@@ -1,0 +1,6 @@
+[tool.pytest.ini_options]
+testpaths = ["test"]
+pythonpath = ["."]
+
+[tool.black]
+line-length = 120
